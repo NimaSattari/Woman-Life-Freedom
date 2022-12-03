@@ -4,13 +4,8 @@ using UnityEngine;
 using TMPro;
 public class UIActions : MonoBehaviour
 {
-    public GameObject move, pickup, open, drop, throwIt, change;
-    public GameObject nameObject, storyObject;
-    public TextMeshProUGUI objectNameText, objectStoryText;
-
-    [SerializeField] public static UIActions instance;
-    [SerializeField] public GameObject invisiblaWall1, invisiblaWall2, invisiblaWall3, invisiblaWall4;
     #region Singleton
+    [SerializeField] public static UIActions instance;
     private void OnEnable()
     {
         if (UIActions.instance == null)
@@ -28,15 +23,36 @@ public class UIActions : MonoBehaviour
     }
     #endregion
 
+    private TextMeshProUGUI objectNameText, objectStoryText;
 
-    private void Start()
+    [SerializeField] GameObject nameObject, storyObject;
+
+    private void Awake()
     {
-        StartCoroutine(TurnOfObjectAtTime(move, 5f));
+        objectNameText = nameObject.GetComponentInChildren<TextMeshProUGUI>();
+        objectStoryText = storyObject.GetComponentInChildren<TextMeshProUGUI>();
     }
 
-    IEnumerator TurnOfObjectAtTime(GameObject game, float timer)
+    public void ReactToObjectSeen(string nameOfObject)
     {
-        yield return new WaitForSeconds(timer);
-        game.SetActive(false);
+        nameObject.SetActive(true);
+        objectNameText.text = nameOfObject;
+    }
+
+    public void ReactToObjectPick(string nameOfObject, string storyOfObject)
+    {
+        nameObject.SetActive(true);
+        objectNameText.text = nameOfObject;
+        if (!string.IsNullOrEmpty(storyOfObject))
+        {
+            storyObject.SetActive(true);
+            objectStoryText.text = storyOfObject;
+        }
+    }
+
+    public void ReactToObjectReverse()
+    {
+        nameObject.SetActive(false);
+        storyObject.SetActive(false);
     }
 }

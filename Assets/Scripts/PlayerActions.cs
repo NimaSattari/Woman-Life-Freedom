@@ -23,6 +23,7 @@ public class PlayerActions : MonoBehaviour
 
     private void LateUpdate()
     {
+        //Grab Object Seen
         if(objectGrabbable == null)
         {
             if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast1, pickUpDistance, pickupLayerMask))
@@ -32,13 +33,13 @@ public class PlayerActions : MonoBehaviour
                     if (!objectGrabbable1._outline.enabled)
                     {
                         objectGrabbable1.TurnOnOutline(Color.yellow, true);
-                        UIActions.instance.pickup.SetActive(true);
-                        UIActions.instance.nameObject.SetActive(true);
-                        UIActions.instance.objectNameText.text = objectGrabbable1.objectName;
+                        UIActions.instance.ReactToObjectSeen(objectGrabbable1.objectName);
                     }
                 }
             }
         }
+
+        //Door Seen
         if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast2, pickUpDistance, openCloseLayerMask))
         {
             if (raycast2.transform.TryGetComponent(out objectOpenClose1))
@@ -46,12 +47,12 @@ public class PlayerActions : MonoBehaviour
                 if (!objectOpenClose1._outline.enabled)
                 {
                     objectOpenClose1.TurnOnOutline(Color.yellow, true);
-                    UIActions.instance.open.SetActive(true);
-                    UIActions.instance.nameObject.SetActive(true);
-                    UIActions.instance.objectNameText.text = objectOpenClose1.objectName;
+                    UIActions.instance.ReactToObjectSeen(objectOpenClose1.objectName);
                 }
             }
         }
+
+        //Code Enter Seen
         if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast3, pickUpDistance, codeLayerMask))
         {
             if (raycast3.transform.TryGetComponent(out objectCode1))
@@ -59,39 +60,35 @@ public class PlayerActions : MonoBehaviour
                 if (!objectCode1._outline.enabled)
                 {
                     objectCode1.TurnOnOutline(Color.yellow, true);
-                    UIActions.instance.change.SetActive(true);
-                    UIActions.instance.nameObject.SetActive(true);
-                    UIActions.instance.storyObject.SetActive(true);
-                    UIActions.instance.objectNameText.text = objectCode1.objectName;
-                    UIActions.instance.objectStoryText.text = objectCode1.story;
+                    UIActions.instance.ReactToObjectPick(objectCode1.objectName,objectCode1.story);
                 }
             }
         }
 
+        //Pressed E
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if(objectGrabbable == null)
+            //Grab Object PickUp
+            if (objectGrabbable == null)
             {
-                //Not carrying objcet try to grab
                 if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast, pickUpDistance, pickupLayerMask))
                 {
                     if (raycast.transform.TryGetComponent(out objectGrabbable))
                     {
                         objectGrabbable.Grab(objectGrabPointTransform);
-                        if (!string.IsNullOrEmpty(objectGrabbable.story))
-                        {
-                            UIActions.instance.storyObject.SetActive(true);
-                            UIActions.instance.objectStoryText.text = objectGrabbable.story;
-                        }
+                        UIActions.instance.ReactToObjectPick(objectGrabbable.objectName, objectGrabbable.story);
                     }
                 }
             }
+
+            //Grab Object Drop
             else
             {
-                //object in hand
                 objectGrabbable.Drop();
                 objectGrabbable = null;
             }
+
+            //Door Open Close
             if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast1, pickUpDistance, openCloseLayerMask))
             {
                 if (raycast1.transform.TryGetComponent(out objectOpenClose))
@@ -99,6 +96,8 @@ public class PlayerActions : MonoBehaviour
                     objectOpenClose.Handle();
                 }
             }
+
+            //Code Enter Intract
             if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast4, pickUpDistance, codeLayerMask))
             {
                 if (raycast4.transform.TryGetComponent(out objectCode))
@@ -107,6 +106,8 @@ public class PlayerActions : MonoBehaviour
                 }
             }
         }
+
+        //Grab Object Throw
         if (Input.GetKeyDown(KeyCode.Q))
         {
             if(objectGrabbable != null)
@@ -119,6 +120,8 @@ public class PlayerActions : MonoBehaviour
                 }
             }
         }
+
+        //Light TurnOffOn
         if (Input.GetKeyDown(KeyCode.L))
         {
             if (isLightOn)
@@ -130,6 +133,25 @@ public class PlayerActions : MonoBehaviour
             {
                 canddlelight.SetActive(true);
                 isLightOn = true;
+            }
+        }
+
+        //Left Mouse On Locked Door
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            if(objectGrabbable != null)
+            {
+                if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast5, pickUpDistance, openCloseLayerMask))
+                {
+                    if (raycast5.transform.TryGetComponent(out objectOpenClose))
+                    {
+                        if (objectOpenClose.TryOpenWithKey(objectGrabbable.gameObject))
+                        {
+                            objectGrabbable.Drop();
+                            objectGrabbable = null;
+                        }
+                    }
+                }
             }
         }
     }

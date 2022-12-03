@@ -9,8 +9,8 @@ public class ObjectCode : MonoBehaviour
 
     private void Start()
     {
-        result = new int[] { 0, 0, 0 };
-        correctCombination = new int[] { 2, 3, 4 };
+        result = new int[] { 5, 5, 5 };
+        correctCombination = new int[] { 1, 2, 3 };
         Rotate.Rotated += CheckResults;
     }
 

@@ -4,22 +4,23 @@ using UnityEngine;
 
 public class ObjectGrabbable : MonoBehaviour
 {
-    [SerializeField] private Rigidbody objectRigidbody;
     [SerializeField] private float lerpSpeed = 10f;
-    [SerializeField] private Outline outline;
     [SerializeField] public string objectName;
     [SerializeField] public string story;
 
     [Header("Throwing")]
     public float throwForce;
     public float throwUpwardForce;
-
     public Outline _outline { get { return outline; } }
+
     private Transform grabPointTransform;
+    private Rigidbody objectRigidbody;
+    private Outline outline;
 
     private void Awake()
     {
         objectRigidbody = GetComponent<Rigidbody>();
+        outline = GetComponent<Outline>();
     }
 
     private void FixedUpdate()
@@ -37,10 +38,6 @@ public class ObjectGrabbable : MonoBehaviour
         objectRigidbody.useGravity = false;
         objectRigidbody.isKinematic = true;
         TurnOnOutline(Color.green, false);
-        UIActions.instance.drop.SetActive(true);
-        UIActions.instance.throwIt.SetActive(true);
-        UIActions.instance.pickup.SetActive(false);
-
     }
 
     public void Drop()
@@ -49,10 +46,7 @@ public class ObjectGrabbable : MonoBehaviour
         objectRigidbody.useGravity = true;
         objectRigidbody.isKinematic = false;
         TurnOnOutline(Color.red, true);
-        UIActions.instance.drop.SetActive(false);
-        UIActions.instance.throwIt.SetActive(false);
-        UIActions.instance.nameObject.SetActive(false);
-        UIActions.instance.storyObject.SetActive(false);
+        UIActions.instance.ReactToObjectReverse();
     }
 
     public void Throw(Vector3 forceDirection)
@@ -66,10 +60,7 @@ public class ObjectGrabbable : MonoBehaviour
         TurnOnOutline(Color.red, true);
 
         objectRigidbody.AddForce(forceToAdd, ForceMode.Impulse);
-        UIActions.instance.drop.SetActive(false);
-        UIActions.instance.throwIt.SetActive(false);
-        UIActions.instance.nameObject.SetActive(false);
-        UIActions.instance.storyObject.SetActive(false);
+        UIActions.instance.ReactToObjectReverse();
     }
 
     public void TurnOnOutline(Color color, bool turnoff)
@@ -89,7 +80,6 @@ public class ObjectGrabbable : MonoBehaviour
     public void TurnOffOutline()
     {
         outline.enabled = false;
-        UIActions.instance.pickup.SetActive(false);
-        UIActions.instance.nameObject.SetActive(false);
+        UIActions.instance.ReactToObjectReverse();
     }
 }

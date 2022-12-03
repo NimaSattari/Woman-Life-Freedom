@@ -11,7 +11,9 @@ public class ObjectOpenClose : MonoBehaviour
     private bool isOpen = false;
     [SerializeField] public string objectName;
     [SerializeField] public bool isUnlocked;
-
+    [SerializeField] public GameObject key;
+    [SerializeField] int padsNeeded;
+    [SerializeField] private int padsNow = 0;
     public void Handle()
     {
         if (isUnlocked)
@@ -27,21 +29,48 @@ public class ObjectOpenClose : MonoBehaviour
         }
     }
 
+    public void IncrementPadNum(int numb)
+    {
+        padsNow += numb;
+        if(padsNow == padsNeeded)
+        {
+            isUnlocked = true;
+            Open();
+        }
+        else
+        {
+            isUnlocked = false;
+            Close();
+        }
+    }
+
+    public bool TryOpenWithKey(GameObject key)
+    {
+        if(key == this.key)
+        {
+            isUnlocked = true;
+            Open();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public void Open()
     {
         doTween.DoAnimation();
         TurnOnOutline(Color.green, true);
         isOpen = true;
-        UIActions.instance.open.SetActive(false);
-        UIActions.instance.nameObject.SetActive(false);
+        UIActions.instance.ReactToObjectReverse();
     }
     public void Close()
     {
         doTween.DoAnimationBackward();
         TurnOnOutline(Color.red, true);
         isOpen = false;
-        UIActions.instance.open.SetActive(false);
-        UIActions.instance.nameObject.SetActive(false);
+        UIActions.instance.ReactToObjectReverse();
     }
 
     public void TurnOnOutline(Color color, bool turnoff)
@@ -61,7 +90,6 @@ public class ObjectOpenClose : MonoBehaviour
     public void TurnOffOutline()
     {
         outline.enabled = false;
-        UIActions.instance.open.SetActive(false);
-        UIActions.instance.nameObject.SetActive(false);
+        UIActions.instance.ReactToObjectReverse();
     }
 }

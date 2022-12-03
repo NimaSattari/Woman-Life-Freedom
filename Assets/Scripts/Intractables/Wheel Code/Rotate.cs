@@ -19,7 +19,7 @@ public class Rotate : MonoBehaviour
     private void Start()
     {
         coroutineAllowed = true;
-        numberShown = 0;
+        numberShown = 5;
         story = numberShown.ToString();
     }
 
@@ -36,7 +36,7 @@ public class Rotate : MonoBehaviour
         coroutineAllowed = false;
         for (int i = 0; i<= 11; i++)
         {
-            transform.Rotate(3f, 0f, 0f);
+            transform.Rotate(-3f, 0f, 0f);
             yield return new WaitForSeconds(0.01f);
         }
         numberShown += 1;
@@ -46,7 +46,7 @@ public class Rotate : MonoBehaviour
             numberShown = 0;
         }
         story = numberShown.ToString();
-        UIActions.instance.objectStoryText.text = story;
+        UIActions.instance.ReactToObjectPick(objectName, story);
         Rotated(name, numberShown);
         coroutineAllowed = true;
     }
@@ -68,8 +68,6 @@ public class Rotate : MonoBehaviour
     public void TurnOffOutline()
     {
         outline.enabled = false;
-        UIActions.instance.change.SetActive(false);
-        UIActions.instance.nameObject.SetActive(false);
-        UIActions.instance.storyObject.SetActive(false);
+        UIActions.instance.ReactToObjectReverse();
     }
 }
