@@ -27,6 +27,10 @@ public class ObjectOpenClose : MonoBehaviour
                 Open();
             }
         }
+        else
+        {
+            SoundManager.instance.audioS.PlayOneShot(SoundManager.instance.doorlocked);
+        }
     }
 
     public void IncrementPadNum(int numb)
@@ -54,12 +58,14 @@ public class ObjectOpenClose : MonoBehaviour
         }
         else
         {
+            SoundManager.instance.audioS.PlayOneShot(SoundManager.instance.doorlocked);
             return false;
         }
     }
 
     public void Open()
     {
+        SoundManager.instance.audioS.PlayOneShot(SoundManager.instance.dooropen);
         doTween.DoAnimation();
         TurnOnOutline(Color.green, true);
         isOpen = true;
@@ -67,6 +73,7 @@ public class ObjectOpenClose : MonoBehaviour
     }
     public void Close()
     {
+        SoundManager.instance.audioS.PlayOneShot(SoundManager.instance.doorclose);
         doTween.DoAnimationBackward();
         TurnOnOutline(Color.red, true);
         isOpen = false;

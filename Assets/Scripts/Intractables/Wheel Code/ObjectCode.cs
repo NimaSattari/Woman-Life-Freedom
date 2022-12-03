@@ -16,6 +16,15 @@ public class ObjectCode : MonoBehaviour
 
     private void CheckResults(string wheelName, int number)
     {
+        int numb = Random.Range(0, 2);
+        if(numb == 0)
+        {
+            SoundManager.instance.audioS.PlayOneShot(SoundManager.instance.codeshuffle1);
+        }
+        else
+        {
+            SoundManager.instance.audioS.PlayOneShot(SoundManager.instance.codeshuffle2);
+        }
         switch (wheelName)
         {
             case "wheel1":
@@ -32,6 +41,7 @@ public class ObjectCode : MonoBehaviour
         {
             openClose.isUnlocked = true;
             openClose.Open();
+            SoundManager.instance.audioS.PlayOneShot(SoundManager.instance.codesolve);
         }
     }
 

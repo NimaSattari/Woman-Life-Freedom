@@ -131,6 +131,7 @@ public class PlayerActions : MonoBehaviour
             }
             else
             {
+                SoundManager.instance.audioS.PlayOneShot(SoundManager.instance.lighter);
                 canddlelight.SetActive(true);
                 isLightOn = true;
             }
