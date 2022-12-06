@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LastScene : MonoBehaviour
 {
-    [SerializeField] GameObject phone1, phone, balcony, balcony1, door;
+    [SerializeField] GameObject phone1, phone, EndDoor, dumbDoor, safeDoor, letter;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -13,10 +13,11 @@ public class LastScene : MonoBehaviour
             if(other.GetComponent<ObjectGrabbable>().grabPointTransform == null)
             {
                 phone1.SetActive(false);
-                balcony1.SetActive(false);
+                dumbDoor.SetActive(false);
                 phone.SetActive(true);
-                balcony.SetActive(true);
-                door.GetComponent<ObjectOpenClose>().Close();
+                EndDoor.SetActive(true);
+                safeDoor.GetComponent<ObjectOpenClose>().Close();
+                letter.SetActive(false);
             }
         }
     }

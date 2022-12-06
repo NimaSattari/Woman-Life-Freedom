@@ -38,6 +38,11 @@ public class ObjectGrabbable : MonoBehaviour
         {
             StoryScript.instance.AfterPhone1();
         }
+        if(tag == "Letter")
+        {
+            StartCoroutine(StoryScript.instance.TurnOnObjectAtTime(StoryScript.instance.letter, 3f));
+            StartCoroutine(StoryScript.instance.TurnOffObjectAtTime(StoryScript.instance.letter, 10f));
+        }
         this.grabPointTransform = objectGrabPointTransform;
         objectRigidbody.useGravity = false;
         objectRigidbody.isKinematic = true;

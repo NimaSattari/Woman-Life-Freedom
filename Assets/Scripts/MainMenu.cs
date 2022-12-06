@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    [SerializeField] GameObject[] panels;
     public void LoadGame()
     {
         SceneManager.LoadScene(1);
@@ -16,6 +17,10 @@ public class MainMenu : MonoBehaviour
 
     public void EnableDisableThis(GameObject gameObject)
     {
+        foreach(GameObject @object in panels)
+        {
+            @object.SetActive(false);
+        }
         if (gameObject.activeInHierarchy)
         {
             gameObject.SetActive(false);

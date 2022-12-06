@@ -5,7 +5,7 @@ using UnityEngine;
 public class StoryScript : MonoBehaviour
 {
     [SerializeField] public
-    GameObject move, line1, line2, pick, throwIt, lighter, whereisLight, whereisKeyLight, toomaj, phone, music, mommy;
+    GameObject move, line1, line2, pick, throwIt, lighter, whereisKeyLight, toomaj, phone, music, mommy, letter;
 
     [SerializeField] GameObject[] beforePhoneObjects;
     [SerializeField] GameObject[] afterPhoneObjects;
@@ -31,24 +31,22 @@ public class StoryScript : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(TurnOnObjectAtTime(move, 2f));
-        StartCoroutine(TurnOffObjectAtTime(move, 4f));
-        StartCoroutine(TurnOnObjectAtTime(whereisLight, 5f));
-        StartCoroutine(TurnOffObjectAtTime(whereisLight, 8f));
-        StartCoroutine(TurnOnObjectAtTime(lighter, 9f));
-        StartCoroutine(TurnOffObjectAtTime(lighter, 11f));
-        StartCoroutine(TurnOnObjectAtTime(line1, 13f));
-        StartCoroutine(TurnOffObjectAtTime(line1, 18));
-        StartCoroutine(TurnOnObjectAtTime(line2, 19));
-        StartCoroutine(TurnOffObjectAtTime(line2, 24));
-        StartCoroutine(TurnOnObjectAtTime(pick, 25));
-        StartCoroutine(TurnOffObjectAtTime(pick, 28));
-        StartCoroutine(TurnOnObjectAtTime(throwIt, 29));
-        StartCoroutine(TurnOffObjectAtTime(throwIt, 31));
-        StartCoroutine(TurnOnObjectAtTime(whereisKeyLight, 32));
-        StartCoroutine(TurnOffObjectAtTime(whereisKeyLight, 36));
+        StartCoroutine(TurnOnObjectAtTime(move, 2));
+        StartCoroutine(TurnOffObjectAtTime(move, 4));
+        StartCoroutine(TurnOnObjectAtTime(lighter, 5));
+        StartCoroutine(TurnOffObjectAtTime(lighter, 8));
+        StartCoroutine(TurnOnObjectAtTime(line1, 9));
+        StartCoroutine(TurnOffObjectAtTime(line1, 14));
+        StartCoroutine(TurnOnObjectAtTime(line2, 14));
+        StartCoroutine(TurnOffObjectAtTime(line2, 19));
+        StartCoroutine(TurnOnObjectAtTime(pick, 20));
+        StartCoroutine(TurnOffObjectAtTime(pick, 23));
+        StartCoroutine(TurnOnObjectAtTime(throwIt, 24));
+        StartCoroutine(TurnOffObjectAtTime(throwIt, 27));
+        StartCoroutine(TurnOnObjectAtTime(whereisKeyLight, 28));
+        StartCoroutine(TurnOffObjectAtTime(whereisKeyLight, 31));
 
-        StartCoroutine(TurnOnObjectAtTime(phone, 37));
+        StartCoroutine(TurnOnObjectAtTime(phone, 31));
     }
 
     public IEnumerator TurnOffObjectAtTime(GameObject game, float timer)
@@ -76,7 +74,7 @@ public class StoryScript : MonoBehaviour
         {
             gameObject.SetActive(true);
         }
-        StartCoroutine(TurnOnObjectAtTime(mommy, 1));
-        StartCoroutine(TurnOffObjectAtTime(mommy, 8));
+        StartCoroutine(TurnOnObjectAtTime(mommy, 3));
+        StartCoroutine(TurnOffObjectAtTime(mommy, 15));
     }
 }

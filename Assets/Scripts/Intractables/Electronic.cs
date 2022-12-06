@@ -58,7 +58,7 @@ public class Electronic : MonoBehaviour
             if (whichnumb == 2)
             {
                 StartCoroutine(StoryScript.instance.TurnOnObjectAtTime(StoryScript.instance.toomaj, 3f));
-                StartCoroutine(StoryScript.instance.TurnOnObjectAtTime(StoryScript.instance.toomaj, 8f));
+                StartCoroutine(StoryScript.instance.TurnOffObjectAtTime(StoryScript.instance.toomaj, 8f));
             }
         }
         UIActions.instance.ReactToObjectPick(names[whichnumb], story);
@@ -85,7 +85,7 @@ public class Electronic : MonoBehaviour
             if (whichnumb == 2)
             {
                 StartCoroutine(StoryScript.instance.TurnOnObjectAtTime(StoryScript.instance.toomaj, 1f));
-                StartCoroutine(StoryScript.instance.TurnOnObjectAtTime(StoryScript.instance.toomaj, 10f));
+                StartCoroutine(StoryScript.instance.TurnOffObjectAtTime(StoryScript.instance.toomaj, 10f));
             }
         }
         UIActions.instance.ReactToObjectPick(names[whichnumb], story);

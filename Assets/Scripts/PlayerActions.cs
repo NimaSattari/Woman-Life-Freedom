@@ -96,7 +96,7 @@ public class PlayerActions : MonoBehaviour
             if (raycast8.transform.TryGetComponent(out Outline outline))
             {
                 outline.enabled = true;
-                outline.OutlineColor = Color.yellow;
+                StartCoroutine(raycast8.transform.GetComponent<Lamp>().enumerator());
             }
         }
 
@@ -229,6 +229,7 @@ public class PlayerActions : MonoBehaviour
             }
         }
 
+        //Pause
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (pauseUI.activeInHierarchy)
@@ -257,6 +258,7 @@ public class PlayerActions : MonoBehaviour
                 }
             }
         }
+
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast13, pickUpDistance, balcony))
