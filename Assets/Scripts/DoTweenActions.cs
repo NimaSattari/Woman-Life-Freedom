@@ -4,57 +4,83 @@ using System.Collections;
 
 public class DoTweenActions : MonoBehaviour
 {
-    Vector3 initalLocation = Vector3.zero;
-    Vector3 initalSize = Vector3.zero;
-    Quaternion initalRotation;
+    Vector3 initalLocation;
+    Vector3 initalSize;
+    Vector3 initalRotation;
 
-    public Vector3 targetLocation = Vector3.zero;
-    public Vector3 targetSize = Vector3.zero;
+    public Vector3 targetLocation;
+    public Vector3 targetSize;
     public Vector3 targetRotation;
-    public float animationDuration = 1f;
+    public float animationDuration;
     public Ease animationEase = Ease.Linear;
     [SerializeField] AnimationType animationType = AnimationType.Move;
-    public bool doOnStart = false;
-    public bool rotatethis;
+    public bool doOnStart;
     public bool oneLoop;
-    public bool loop;
+    public bool infiniteLoop;
+
     enum AnimationType
     {
         Move,
         Rotate,
         Scale,
         MoveAndScale,
-        MoveAndRotate
+        MoveAndRotate,
+        ScaleAndRotate
     }
-    Tweener tr;
-    private void Start()
-    {
-        if (rotatethis)
-        {
-            tr = transform.DOBlendableLocalRotateBy(new Vector3(0, 360, 0), 1f, RotateMode.FastBeyond360);
-            tr.SetAutoKill(false);
-            tr.Pause();
-        }
-    }
+
     private void OnEnable()
     {
         initalLocation = transform.localPosition;
         initalSize = transform.localScale;
-        initalRotation = transform.localRotation;
-        if (doOnStart)
-        {
-            DoAnimation();
-        }
+        initalRotation = transform.localRotation.eulerAngles;
     }
+
     private void OnDisable()
     {
         transform.localPosition = initalLocation;
         transform.localScale = initalSize;
-        transform.localRotation = initalRotation;
+        transform.localEulerAngles = initalRotation;
     }
+
     private void OnDestroy()
     {
         DOTween.Kill(transform);
+    }
+
+    private void Start()
+    {
+        if (doOnStart)
+        {
+            if (infiniteLoop)
+            {
+                StartCoroutine(InfiniteLoop());
+            }
+            if (oneLoop)
+            {
+                StartCoroutine(OneLoop());
+            }
+            if(!infiniteLoop || !oneLoop)
+            {
+                DoAnimation();
+            }
+        }
+    }
+
+    public IEnumerator InfiniteLoop()
+    {
+        DoAnimation();
+        yield return new WaitForSeconds(animationDuration);
+        DoAnimationBackward();
+        yield return new WaitForSeconds(animationDuration);
+        StartCoroutine(InfiniteLoop());
+    }
+
+    public IEnumerator OneLoop()
+    {
+        DoAnimation();
+        yield return new WaitForSeconds(animationDuration);
+        DoAnimationBackward();
+        yield return new WaitForSeconds(animationDuration);
     }
 
     public void DoAnimation()
@@ -65,8 +91,7 @@ public class DoTweenActions : MonoBehaviour
         }
         else if (animationType == AnimationType.Rotate)
         {
-            transform.DORotate(targetRotation, animationDuration).SetEase(animationEase);
-            //transform.DORotateQuaternion(targetRotation, animationDuration).SetEase(animationEase);
+            transform.DOLocalRotate(targetRotation, animationDuration).SetEase(animationEase);
         }
         else if (animationType == AnimationType.Scale)
         {
@@ -78,27 +103,29 @@ public class DoTweenActions : MonoBehaviour
                 .Append(transform.DOLocalMove(targetLocation, animationDuration).SetEase(animationEase))
                 .Join(transform.DOScale(targetSize, animationDuration).SetEase(animationEase));
         }
-        /*        else if (animationType == AnimationType.MoveAndRotate)
-                {
-                    DOTween.Sequence().SetAutoKill(false)
-                        .Append(transform.DOLocalMove(targetLocation, animationDuration).SetEase(animationEase))
-                        .Join(transform.DORotateQuaternion(targetRotation, animationDuration).SetEase(animationEase));
-                }*/
-/*        if (loop || oneLoop)
+        else if (animationType == AnimationType.MoveAndRotate)
         {
-            StartCoroutine(DoAnimationBackward());
-        }*/
+            DOTween.Sequence().SetAutoKill(false)
+                .Append(transform.DOLocalMove(targetLocation, animationDuration).SetEase(animationEase))
+                .Join(transform.DOLocalRotate(targetRotation, animationDuration).SetEase(animationEase));
+        }
+        else if (animationType == AnimationType.ScaleAndRotate)
+        {
+            DOTween.Sequence().SetAutoKill(false)
+                .Append(transform.DOScale(targetSize, animationDuration).SetEase(animationEase))
+                .Join(transform.DOLocalRotate(targetRotation, animationDuration).SetEase(animationEase));
+        }
     }
+
     public void DoAnimationBackward()
     {
-        //yield return new WaitForSeconds(animationDuration);
         if (animationType == AnimationType.Move)
         {
             transform.DOLocalMove(initalLocation, animationDuration).SetEase(animationEase);
         }
         else if (animationType == AnimationType.Rotate)
         {
-            transform.DORotateQuaternion(initalRotation, animationDuration).SetEase(animationEase);
+            transform.DOLocalRotate(initalRotation, animationDuration).SetEase(animationEase);
         }
         else if (animationType == AnimationType.Scale)
         {
@@ -114,12 +141,13 @@ public class DoTweenActions : MonoBehaviour
         {
             DOTween.Sequence().SetAutoKill(false)
                 .Append(transform.DOLocalMove(initalLocation, animationDuration).SetEase(animationEase))
-                .Join(transform.DORotateQuaternion(initalRotation, animationDuration).SetEase(animationEase));
+                .Join(transform.DOLocalRotate(initalRotation, animationDuration).SetEase(animationEase));
         }
-/*        if (loop)
+        else if (animationType == AnimationType.ScaleAndRotate)
         {
-            yield return new WaitForSeconds(animationDuration);
-            DoAnimation();
-        }*/
+            DOTween.Sequence().SetAutoKill(false)
+                .Append(transform.DOScale(initalSize, animationDuration).SetEase(animationEase))
+                .Join(transform.DOLocalRotate(initalRotation, animationDuration).SetEase(animationEase));
+        }
     }
 }
