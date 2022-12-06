@@ -14,6 +14,7 @@ public class ObjectOpenClose : MonoBehaviour
     [SerializeField] public GameObject key;
     [SerializeField] int padsNeeded;
     [SerializeField] private int padsNow = 0;
+    [SerializeField] GameObject[] afterOpenObjects;
     public void Handle()
     {
         if (isUnlocked)
@@ -67,6 +68,10 @@ public class ObjectOpenClose : MonoBehaviour
     {
         SoundManager.instance.audioS.PlayOneShot(SoundManager.instance.dooropen);
         doTween.DoAnimation();
+        foreach(GameObject afterObject in afterOpenObjects)
+        {
+            afterObject.SetActive(true);
+        }
         TurnOnOutline(Color.green, true);
         isOpen = true;
         UIActions.instance.ReactToObjectReverse();

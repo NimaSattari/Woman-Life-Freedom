@@ -15,7 +15,7 @@ public class Electronic : MonoBehaviour
     [SerializeField] Image laptopImageUi;
     [SerializeField] GameObject[] directionsUIs;
     [SerializeField] int whichnumb = -1;
-
+    [SerializeField] GameObject volumeUp, volumeDown;
     public Outline _outline { get { return outline; } }
 
     private Outline outline;
@@ -36,6 +36,17 @@ public class Electronic : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.H))
             {
                 Next();
+            }
+            if (!islaptop)
+            {
+                if (Input.GetKeyDown(KeyCode.Y))
+                {
+                    SoundManager.instance.VolumeButton(+0.1f);
+                }
+                if (Input.GetKeyDown(KeyCode.T))
+                {
+                    SoundManager.instance.VolumeButton(-0.1f);
+                }
             }
         }
     }
@@ -70,7 +81,7 @@ public class Electronic : MonoBehaviour
         {
             if (whichnumb < 0)
             {
-                whichnumb = sprites.Length;
+                whichnumb = sprites.Length - 1;
             }
             laptopImageUi.sprite = sprites[whichnumb];
         }
@@ -78,7 +89,7 @@ public class Electronic : MonoBehaviour
         {
             if (whichnumb < 0)
             {
-                whichnumb = audios.Length;
+                whichnumb = audios.Length - 1;
             }
             SoundManager.instance.audioS.clip = audios[whichnumb];
             SoundManager.instance.audioS.Play();
@@ -98,6 +109,11 @@ public class Electronic : MonoBehaviour
         {
             laptopImageUi.enabled = true;
         }
+        else
+        {
+            volumeDown.SetActive(true);
+            volumeUp.SetActive(true);
+        }
         foreach (GameObject gameObject in directionsUIs)
         {
             gameObject.SetActive(true);
@@ -112,6 +128,11 @@ public class Electronic : MonoBehaviour
         if (islaptop)
         {
             laptopImageUi.enabled = false;
+        }
+        else
+        {
+            volumeDown.SetActive(false);
+            volumeUp.SetActive(false);
         }
         foreach (GameObject gameObject in directionsUIs)
         {

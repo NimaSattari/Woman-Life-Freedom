@@ -35,8 +35,21 @@ public class PlayerActions : MonoBehaviour
 
     private void LateUpdate()
     {
+        //Door Seen
+        if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast2, pickUpDistance, openCloseLayerMask))
+        {
+            if (raycast2.transform.TryGetComponent(out objectOpenClose1))
+            {
+                if (!objectOpenClose1._outline.enabled)
+                {
+                    objectOpenClose1.TurnOnOutline(Color.yellow, true);
+                    UIActions.instance.ReactToObjectSeen(objectOpenClose1.objectName);
+                }
+            }
+        }
+
         //Grab Object Seen
-        if(objectGrabbable == null)
+        if (objectGrabbable == null)
         {
             if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast1, pickUpDistance, pickupLayerMask))
             {
@@ -47,19 +60,6 @@ public class PlayerActions : MonoBehaviour
                         objectGrabbable1.TurnOnOutline(Color.yellow, true);
                         UIActions.instance.ReactToObjectSeen(objectGrabbable1.objectName);
                     }
-                }
-            }
-        }
-
-        //Door Seen
-        if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast2, pickUpDistance, openCloseLayerMask))
-        {
-            if (raycast2.transform.TryGetComponent(out objectOpenClose1))
-            {
-                if (!objectOpenClose1._outline.enabled)
-                {
-                    objectOpenClose1.TurnOnOutline(Color.yellow, true);
-                    UIActions.instance.ReactToObjectSeen(objectOpenClose1.objectName);
                 }
             }
         }

@@ -27,4 +27,9 @@ public class SoundManager : MonoBehaviour
     }
     #endregion
 
+
+    public void VolumeButton(float change)
+    {
+        audioS.volume += change;
+    }
 }
