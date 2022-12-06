@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerActions : MonoBehaviour
 {
     [SerializeField] private Transform playerCameraTransform;
-    [SerializeField] private LayerMask pickupLayerMask, throwLayerMask, openCloseLayerMask, codeLayerMask;
+    [SerializeField] private LayerMask pickupLayerMask, throwLayerMask, openCloseLayerMask, codeLayerMask, elctroLayerMask, lampLayerMask, balcony;
     [SerializeField] private float pickUpDistance = 2f;
     [SerializeField] private Transform objectGrabPointTransform;
     [SerializeField] private GameObject canddlelight;
@@ -19,7 +19,19 @@ public class PlayerActions : MonoBehaviour
     private Rotate objectCode;
     private Rotate objectCode1;
 
+    private Electronic electronic;
+    private Electronic electronic1;
+
     private bool isLightOn = false;
+
+    [SerializeField] GameObject lamp;
+    [SerializeField] bool isLampOn = false;
+
+    [SerializeField] GameObject pauseUI;
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 
     private void LateUpdate()
     {
@@ -52,6 +64,19 @@ public class PlayerActions : MonoBehaviour
             }
         }
 
+        //Electronic Seen
+        if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast6, pickUpDistance, elctroLayerMask))
+        {
+            if (raycast6.transform.TryGetComponent(out electronic1))
+            {
+                if (!electronic1._outline.enabled)
+                {
+                    electronic1.TurnOnOutline(Color.yellow, true);
+                    UIActions.instance.ReactToObjectSeen(electronic1.objectName);
+                }
+            }
+        }
+
         //Code Enter Seen
         if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast3, pickUpDistance, codeLayerMask))
         {
@@ -65,8 +90,18 @@ public class PlayerActions : MonoBehaviour
             }
         }
 
-        //Pressed E
-        if (Input.GetKeyDown(KeyCode.E))
+        //Lamp Seen
+        if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast8, pickUpDistance, lampLayerMask))
+        {
+            if (raycast8.transform.TryGetComponent(out Outline outline))
+            {
+                outline.enabled = true;
+                outline.OutlineColor = Color.yellow;
+            }
+        }
+
+        //Pressed Mouse 0
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             //Grab Object PickUp
             if (objectGrabbable == null)
@@ -84,8 +119,31 @@ public class PlayerActions : MonoBehaviour
             //Grab Object Drop
             else
             {
-                objectGrabbable.Drop();
-                objectGrabbable = null;
+                if(!Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast10, pickUpDistance, openCloseLayerMask))
+                {
+                    objectGrabbable.Drop();
+                    objectGrabbable = null;
+                }
+            }
+
+            //Electo Object PickUp
+            if (electronic == null)
+            {
+                if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast7, pickUpDistance, elctroLayerMask))
+                {
+                    if (raycast7.transform.TryGetComponent(out electronic))
+                    {
+                        electronic.Grab();
+                        //UIActions.instance.ReactToObjectPick(electronic.objectName, electronic.story);
+                    }
+                }
+            }
+
+            //Electro Object PickUp
+            else
+            {
+                electronic.Drop();
+                electronic = null;
             }
 
             //Door Open Close
@@ -93,8 +151,27 @@ public class PlayerActions : MonoBehaviour
             {
                 if (raycast1.transform.TryGetComponent(out objectOpenClose))
                 {
-                    objectOpenClose.Handle();
+                    if (!objectOpenClose.isUnlocked)
+                    {
+                        if(objectGrabbable != null)
+                        {
+                            if (objectOpenClose.TryOpenWithKey(objectGrabbable.gameObject))
+                            {
+                                objectGrabbable.Drop();
+                                objectGrabbable = null;
+                            }
+                        }
+                        else
+                        {
+                            objectOpenClose.Handle();
+                        }
+                    }
+                    else
+                    {
+                        objectOpenClose.Handle();
+                    }
                 }
+
             }
 
             //Code Enter Intract
@@ -105,10 +182,25 @@ public class PlayerActions : MonoBehaviour
                     objectCode.Handle();
                 }
             }
+
+            //Lamp On Off
+            if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast9, pickUpDistance, lampLayerMask))
+            {
+                if (isLampOn)
+                {
+                    isLampOn = false;
+                    lamp.SetActive(false);
+                }
+                else
+                {
+                    isLampOn = true;
+                    lamp.SetActive(true);
+                }
+            }
         }
 
         //Grab Object Throw
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             if(objectGrabbable != null)
             {
@@ -122,7 +214,7 @@ public class PlayerActions : MonoBehaviour
         }
 
         //Light TurnOffOn
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             if (isLightOn)
             {
@@ -137,23 +229,44 @@ public class PlayerActions : MonoBehaviour
             }
         }
 
-        //Left Mouse On Locked Door
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(objectGrabbable != null)
+            if (pauseUI.activeInHierarchy)
             {
-                if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast5, pickUpDistance, openCloseLayerMask))
+                Time.timeScale = 1;
+                pauseUI.SetActive(false);
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+                Time.timeScale = 0;
+                pauseUI.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
+
+
+        if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast12, pickUpDistance, balcony))
+        {
+            if (raycast12.transform.TryGetComponent(out BalconyEnd balconyEnd))
+            {
+                if (!balconyEnd._outline.enabled)
                 {
-                    if (raycast5.transform.TryGetComponent(out objectOpenClose))
-                    {
-                        if (objectOpenClose.TryOpenWithKey(objectGrabbable.gameObject))
-                        {
-                            objectGrabbable.Drop();
-                            objectGrabbable = null;
-                        }
-                    }
+                    balconyEnd.TurnOnOutline(Color.yellow, true);
+                    UIActions.instance.ReactToObjectSeen(balconyEnd.objectname);
                 }
             }
         }
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast13, pickUpDistance, balcony))
+            {
+                if (raycast13.transform.TryGetComponent(out BalconyEnd balconyEnd))
+                {
+                    balconyEnd.End();
+                }
+            }
+        }
+
     }
 }

@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 public class UIActions : MonoBehaviour
 {
     #region Singleton
     [SerializeField] public static UIActions instance;
+    [SerializeField] GameObject pauseMenu;
+
     private void OnEnable()
     {
         if (UIActions.instance == null)
@@ -54,5 +58,22 @@ public class UIActions : MonoBehaviour
     {
         nameObject.SetActive(false);
         storyObject.SetActive(false);
+    }
+
+    public void Resume()
+    {
+        Time.timeScale = 1;
+        pauseMenu.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void QUitGame()
+    {
+        Application.Quit();
     }
 }

@@ -13,7 +13,7 @@ public class ObjectGrabbable : MonoBehaviour
     public float throwUpwardForce;
     public Outline _outline { get { return outline; } }
 
-    private Transform grabPointTransform;
+    public Transform grabPointTransform;
     private Rigidbody objectRigidbody;
     private Outline outline;
 
@@ -34,10 +34,15 @@ public class ObjectGrabbable : MonoBehaviour
 
     public void Grab(Transform objectGrabPointTransform)
     {
+        if (objectName == "Phone")
+        {
+            StoryScript.instance.AfterPhone1();
+        }
         this.grabPointTransform = objectGrabPointTransform;
         objectRigidbody.useGravity = false;
         objectRigidbody.isKinematic = true;
         TurnOnOutline(Color.green, false);
+        SoundManager.instance.audioS.PlayOneShot(SoundManager.instance.grab);
     }
 
     public void Drop()
@@ -47,6 +52,7 @@ public class ObjectGrabbable : MonoBehaviour
         objectRigidbody.isKinematic = false;
         TurnOnOutline(Color.red, true);
         UIActions.instance.ReactToObjectReverse();
+        SoundManager.instance.audioS.PlayOneShot(SoundManager.instance.throwsound);
     }
 
     public void Throw(Vector3 forceDirection)
@@ -61,6 +67,7 @@ public class ObjectGrabbable : MonoBehaviour
 
         objectRigidbody.AddForce(forceToAdd, ForceMode.Impulse);
         UIActions.instance.ReactToObjectReverse();
+        SoundManager.instance.audioS.PlayOneShot(SoundManager.instance.throwsound);
     }
 
     public void TurnOnOutline(Color color, bool turnoff)

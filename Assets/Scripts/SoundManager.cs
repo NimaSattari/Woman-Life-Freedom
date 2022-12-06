@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    public AudioClip codeshuffle1, codeshuffle2, codesolve, doorclose, dooropen, doorlocked, lighter;
+    public AudioClip codeshuffle1, codeshuffle2, codesolve, doorclose, dooropen, doorlocked, lighter, grab, throwsound, phone;
 
     public AudioSource audioS;
 

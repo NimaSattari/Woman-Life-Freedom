@@ -6,6 +6,8 @@ TagManager:
   tags:
   - CinemachineTarget
   - Grab
+  - Key
+  - Letter
   layers:
   - Default
   - TransparentFX
@@ -20,9 +22,9 @@ TagManager:
   - GrabbableObject
   - OpenCloseObject
   - CodeObject
-  - 
-  - 
-  - 
+  - ElectroObject
+  - Lamp
+  - Balcony
   - 
   - 
   - 
