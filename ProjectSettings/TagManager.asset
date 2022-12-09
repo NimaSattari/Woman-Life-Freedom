@@ -8,6 +8,7 @@ TagManager:
   - Grab
   - Key
   - Letter
+  - GrabPoint
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Interactable
   - 
   - Character
   - Ground

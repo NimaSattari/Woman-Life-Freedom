@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIActions : MonoBehaviour
 {
@@ -30,6 +31,9 @@ public class UIActions : MonoBehaviour
     private TextMeshProUGUI objectNameText, objectStoryText;
 
     [SerializeField] GameObject nameObject, storyObject;
+    [SerializeField] GameObject[] pictureAlbum;
+    [SerializeField] GameObject[] audioAlbum;
+    [SerializeField] Image storySprite;
 
     private void Awake()
     {
@@ -60,6 +64,27 @@ public class UIActions : MonoBehaviour
         storyObject.SetActive(false);
     }
 
+    public void PictureActive(bool activity)
+    {
+        foreach(GameObject gameObject in pictureAlbum)
+        {
+            gameObject.SetActive(activity);
+        }
+    }
+
+    public void AudioActive(bool activity)
+    {
+        foreach (GameObject gameObject in audioAlbum)
+        {
+            gameObject.SetActive(activity);
+        }
+    }
+
+    public void ChangeStorySprite(Sprite sprite)
+    {
+        storySprite.sprite = sprite;
+    }
+
     public void Resume()
     {
         Time.timeScale = 1;
@@ -72,8 +97,13 @@ public class UIActions : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public void QUitGame()
+    public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void NextScene(int sceneNum)
+    {
+        SceneManager.LoadScene(sceneNum);
     }
 }

@@ -77,4 +77,9 @@ public class StoryScript : MonoBehaviour
         StartCoroutine(TurnOnObjectAtTime(mommy, 3));
         StartCoroutine(TurnOffObjectAtTime(mommy, 15));
     }
+    public void AfterLetter()
+    {
+        StartCoroutine(TurnOnObjectAtTime(letter, 3f));
+        StartCoroutine(TurnOffObjectAtTime(letter, 10f));
+    }
 }

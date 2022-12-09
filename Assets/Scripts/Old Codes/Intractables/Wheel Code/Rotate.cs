@@ -27,7 +27,7 @@ public class Rotate : MonoBehaviour
     {
         if (coroutineAllowed)
         {
-            StartCoroutine("RotateWheel");
+            StartCoroutine(RotateWheel());
         }
     }
 
