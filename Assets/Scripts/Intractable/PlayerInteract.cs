@@ -10,6 +10,10 @@ public class PlayerInteract : MonoBehaviour
 
     [HideInInspector] public Interactable interactableObjectPicked, interactableObjectSeen;
 
+    bool isLightOn;
+    [SerializeField] GameObject canddlelight;
+    [SerializeField] GameObject pauseUI;
+
     void LateUpdate()
     {
         if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycast0, interactDistance, interactableLayer))
@@ -100,6 +104,38 @@ public class PlayerInteract : MonoBehaviour
                     interactableObjectPicked.RightClickOn((hit.point - objectGrabPointTransform.position).normalized);
                     interactableObjectPicked = null;
                 }
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (isLightOn)
+            {
+                canddlelight.SetActive(false);
+                isLightOn = false;
+            }
+            else
+            {
+                SoundManager.instance.audioS.PlayOneShot(SoundManager.instance.lighter);
+                canddlelight.SetActive(true);
+                isLightOn = true;
+            }
+        }
+
+        //Pause
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (pauseUI.activeInHierarchy)
+            {
+                pauseUI.SetActive(false);
+                Time.timeScale = 1;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+                pauseUI.SetActive(true);
+                Time.timeScale = 0;
+                Cursor.lockState = CursorLockMode.None;
             }
         }
     }

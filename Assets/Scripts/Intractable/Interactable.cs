@@ -12,7 +12,9 @@ public abstract class Interactable : MonoBehaviour
     public string[] objectStory;
     //Private
     private Outline outline;
-    [SerializeField] UnityEvent OnLeftClickOn, OnLeftClickOff, OnRightClickOn;
+    private bool firstLeftClickOn, firstLeftClickOff, firstRightClickOn;
+
+    [SerializeField] UnityEvent OnLeftClickOn, OnFirstLeftClickOn, OnLeftClickOff, OnFirstLeftClickOff, OnRightClickOn, OnFirstRightClickOn;
 
     private void Awake()
     {
@@ -43,14 +45,29 @@ public abstract class Interactable : MonoBehaviour
 
     public virtual void LeftClickOn()
     {
+        if (!firstLeftClickOn)
+        {
+            firstLeftClickOn = true;
+            OnFirstLeftClickOn.Invoke();
+        }
         OnLeftClickOn.Invoke();
     }
     public virtual void LeftClickOff()
     {
+        if (!firstLeftClickOff)
+        {
+            firstLeftClickOff = true;
+            OnFirstLeftClickOff.Invoke();
+        }
         OnLeftClickOff.Invoke();
     }
     public virtual void RightClickOn(Vector3 forceDirection)
     {
+        if (!firstRightClickOn)
+        {
+            firstRightClickOn = true;
+            OnFirstRightClickOn.Invoke();
+        }
         OnRightClickOn.Invoke();
     }
 }

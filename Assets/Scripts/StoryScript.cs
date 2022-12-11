@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class StoryScript : MonoBehaviour
 {
@@ -25,7 +26,6 @@ public class StoryScript : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
-        DontDestroyOnLoad(this.gameObject);
     }
     #endregion
 
@@ -81,5 +81,10 @@ public class StoryScript : MonoBehaviour
     {
         StartCoroutine(TurnOnObjectAtTime(letter, 3f));
         StartCoroutine(TurnOffObjectAtTime(letter, 10f));
+    }
+    public void Toomaj()
+    {
+        StartCoroutine(TurnOnObjectAtTime(toomaj, 1f));
+        StartCoroutine(TurnOffObjectAtTime(toomaj, 10f));
     }
 }

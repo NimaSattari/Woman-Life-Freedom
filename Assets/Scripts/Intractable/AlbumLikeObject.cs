@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(BoxCollider))]
 public class AlbumLikeObject : Interactable
@@ -15,6 +16,9 @@ public class AlbumLikeObject : Interactable
 
     [HideInInspector] public bool isSelected;
     [HideInInspector] public int whichnumb = -1;
+
+    [SerializeField] UnityEvent[] eventsToDoInNumber;
+    [SerializeField] int[] eventInNumber;
 
     private void Update()
     {
@@ -61,13 +65,22 @@ public class AlbumLikeObject : Interactable
         {
             SoundManager.instance.audioS.clip = audios[whichnumb];
             SoundManager.instance.audioS.Play();
-            if (whichnumb == 2)
-            {
-                StartCoroutine(StoryScript.instance.TurnOnObjectAtTime(StoryScript.instance.toomaj, 3f));
-                StartCoroutine(StoryScript.instance.TurnOffObjectAtTime(StoryScript.instance.toomaj, 8f));
-            }
         }
         UIActions.instance.ReactToObjectPick(objectName[whichnumb], objectStory[whichnumb]);
+        for(int i = 0; i< eventInNumber.Length; i++)
+        {
+            if (eventInNumber[i] == whichnumb)
+            {
+                eventsToDoInNumber[i].Invoke();
+            }
+        }
+/*        foreach(int i in eventInNumber)
+        {
+            if(eventInNumber[i] == whichnumb)
+            {
+                eventsToDoInNumber[i].Invoke();
+            }
+        }*/
     }
     private void Before()
     {
@@ -88,13 +101,15 @@ public class AlbumLikeObject : Interactable
             }
             SoundManager.instance.audioS.clip = audios[whichnumb];
             SoundManager.instance.audioS.Play();
-            if (whichnumb == 2)
-            {
-                StartCoroutine(StoryScript.instance.TurnOnObjectAtTime(StoryScript.instance.toomaj, 1f));
-                StartCoroutine(StoryScript.instance.TurnOffObjectAtTime(StoryScript.instance.toomaj, 10f));
-            }
         }
         UIActions.instance.ReactToObjectPick(objectName[whichnumb], objectStory[whichnumb]);
+        foreach (int i in eventInNumber)
+        {
+            if (whichnumb == eventInNumber[i])
+            {
+                eventsToDoInNumber[i].Invoke();
+            }
+        }
     }
 
     public override void LeftClickOn()

@@ -24,7 +24,6 @@ public class UIActions : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
-        DontDestroyOnLoad(this.gameObject);
     }
     #endregion
 

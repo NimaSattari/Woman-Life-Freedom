@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Mine/Main Menu.unity
     guid: 2d264eab9ee1c5d48bdb3d23348b1ad3
   - enabled: 1
-    path: Assets/Scenes/Mine/Game Scene.unity
-    guid: e2142e895e67d6b4190a8157f9cc9237
+    path: Assets/Scenes/Mine/Game Scene 1.unity
+    guid: 1e90ecba2188ff343b4d7269751ca286
   - enabled: 1
     path: Assets/Scenes/Mine/Main Menu 1.unity
     guid: bd4de08a3acaa3a45bb4e0d23b62c12b
