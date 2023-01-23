@@ -9,6 +9,9 @@ TagManager:
   - Key
   - Letter
   - GrabPoint
+  - InspectPoint
+  - ExaminePoint
+  - ItemName
   layers:
   - Default
   - TransparentFX
@@ -26,8 +29,8 @@ TagManager:
   - ElectroObject
   - Lamp
   - Balcony
-  - 
-  - 
+  - ExamineLayer
+  - InspectPointLayer
   - 
   - 
   - 

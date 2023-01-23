@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using StarterAssets;
 
 public class UIActions : MonoBehaviour
 {
@@ -33,11 +34,25 @@ public class UIActions : MonoBehaviour
     [SerializeField] GameObject[] pictureAlbum;
     [SerializeField] GameObject[] audioAlbum;
     [SerializeField] Image storySprite;
+    [SerializeField] ThirdPersonController thirdPersonController;
+    [SerializeField] Image middlePoint;
 
     private void Awake()
     {
         objectNameText = nameObject.GetComponentInChildren<TextMeshProUGUI>();
         objectStoryText = storyObject.GetComponentInChildren<TextMeshProUGUI>();
+    }
+
+    public void DisableMiddlePoint(bool disable)
+    {
+        if (disable)
+        {
+            middlePoint.gameObject.SetActive(false);
+        }
+        else
+        {
+            middlePoint.gameObject.SetActive(true);
+        }
     }
 
     public void ReactToObjectSeen(string nameOfObject)
@@ -86,8 +101,10 @@ public class UIActions : MonoBehaviour
 
     public void Resume()
     {
+        thirdPersonController.enabled = true;
         Time.timeScale = 1;
         pauseMenu.SetActive(false);
+        DisableMiddlePoint(false);
         Cursor.lockState = CursorLockMode.Locked;
     }
 
